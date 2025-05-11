@@ -16,7 +16,7 @@ import (
 // @title Order API
 // @version 1.0
 // @description API для управления заказами и продуктами
-// @host localhost:8080
+// @host http://localhost:8080
 // @BasePath /
 func main() {
 	cfg := config.Load()

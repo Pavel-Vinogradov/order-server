@@ -73,7 +73,7 @@ func (h *Handler) GetAll(w http.ResponseWriter, r *http.Request) {
 // @Tags products
 // @Accept  json
 // @Produce  json
-// @Param   product body entity.CreateProductRequest true "Продукт"
+// @Param   product body dto.CreateProductRequest true "Продукт"
 // @Success 201 {object} entity.Product
 // @Failure 400 {object} response.ErrorsResponse
 // @Router /products [post]
