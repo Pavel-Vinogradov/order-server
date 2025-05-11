@@ -67,6 +67,16 @@ func (h *Handler) GetAll(w http.ResponseWriter, r *http.Request) {
 	response.WriteJSON(w, http.StatusOK, products)
 }
 
+// Create godoc
+// @Summary Создать продукт
+// @Description Создает новый продукт
+// @Tags products
+// @Accept  json
+// @Produce  json
+// @Param   product body entity.CreateProductRequest true "Продукт"
+// @Success 201 {object} entity.Product
+// @Failure 400 {object} response.ErrorsResponse
+// @Router /products [post]
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	body, err := request.HandleBody[dto.CreateProductRequest](w, r)
 	if err != nil {
