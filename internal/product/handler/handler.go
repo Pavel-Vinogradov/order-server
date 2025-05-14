@@ -17,14 +17,11 @@ type Handler struct {
 	service *service.ProductService
 }
 
-func NewRouterProduct(service *service.ProductService) http.Handler {
-	mux := http.NewServeMux()
+func NewRouterProduct(service *service.ProductService, router *http.ServeMux) {
 	handler := &Handler{service: service}
 
-	mux.HandleFunc("/products", handler.handleProducts)
-	mux.HandleFunc("/products/", handler.handleProductByID)
-
-	return mux
+	router.HandleFunc("/products", handler.handleProducts)
+	router.HandleFunc("/products/", handler.handleProductByID)
 }
 
 func (h *Handler) handleProducts(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +39,7 @@ func (h *Handler) handleProductByID(w http.ResponseWriter, r *http.Request) {
 	idStr := strings.TrimPrefix(r.URL.Path, "/products/")
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil || id < 1 {
-		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		http.Error(w, "Invalid Id", http.StatusBadRequest)
 		return
 	}
 
