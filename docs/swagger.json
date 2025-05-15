@@ -1,0 +1,240 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API для управления заказами и продуктами",
+        "title": "Order API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "http://localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/auth": {
+            "post": {
+                "description": "Авторизация",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Авторизация",
+                "parameters": [
+                    {
+                        "description": "Продукт",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AuthRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dto.AuthResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/verify": {
+            "post": {
+                "description": "Верификация",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Авторизация",
+                "parameters": [
+                    {
+                        "description": "Продукт",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AuthVerifyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dto.AuthVerifyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/products": {
+            "post": {
+                "description": "Создает новый продукт",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Создать продукт",
+                "parameters": [
+                    {
+                        "description": "Продукт",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateProductRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Product"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorsResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.AuthRequest": {
+            "type": "object",
+            "required": [
+                "phone"
+            ],
+            "properties": {
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.AuthResponse": {
+            "type": "object",
+            "properties": {
+                "sessionId": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.AuthVerifyRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "sessionId"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "minLength": 4
+                },
+                "sessionId": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.AuthVerifyResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CreateProductRequest": {
+            "type": "object",
+            "required": [
+                "description",
+                "images",
+                "name"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "minLength": 10
+                },
+                "images": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 3
+                }
+            }
+        },
+        "entity.Product": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "images": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.ErrorsResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,158 @@
+basePath: /
+definitions:
+  dto.AuthRequest:
+    properties:
+      phone:
+        type: string
+    required:
+    - phone
+    type: object
+  dto.AuthResponse:
+    properties:
+      sessionId:
+        type: string
+    type: object
+  dto.AuthVerifyRequest:
+    properties:
+      code:
+        minLength: 4
+        type: string
+      sessionId:
+        type: string
+    required:
+    - code
+    - sessionId
+    type: object
+  dto.AuthVerifyResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  dto.CreateProductRequest:
+    properties:
+      description:
+        minLength: 10
+        type: string
+      images:
+        items:
+          type: string
+        type: array
+      name:
+        maxLength: 100
+        minLength: 3
+        type: string
+    required:
+    - description
+    - images
+    - name
+    type: object
+  entity.Product:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      images:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  response.ErrorsResponse:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+host: http://localhost:8080
+info:
+  contact: {}
+  description: API для управления заказами и продуктами
+  title: Order API
+  version: "1.0"
+paths:
+  /auth:
+    post:
+      consumes:
+      - application/json
+      description: Авторизация
+      parameters:
+      - description: Продукт
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorsResponse'
+      summary: Авторизация
+      tags:
+      - auth
+  /auth/verify:
+    post:
+      consumes:
+      - application/json
+      description: Верификация
+      parameters:
+      - description: Продукт
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AuthVerifyRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.AuthVerifyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorsResponse'
+      summary: Авторизация
+      tags:
+      - auth
+  /products:
+    post:
+      consumes:
+      - application/json
+      description: Создает новый продукт
+      parameters:
+      - description: Продукт
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Product'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorsResponse'
+      summary: Создать продукт
+      tags:
+      - products
+swagger: "2.0"
