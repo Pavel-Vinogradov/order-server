@@ -59,6 +59,10 @@ func (s *AuthService) Auth(body *dto.AuthRequest) (*entityAuth.Auth, error) {
 	return created, nil
 }
 
+func (s *AuthService) GetUserBySession(sessionId string) (*entityAuth.Auth, error) {
+	return s.authRepo.FindBySession(sessionId)
+}
+
 func NewAuthService(ar *authRepository.AuthRepository, us *userService.UserService) *AuthService {
 	return &AuthService{
 		authRepo:    ar,

@@ -4,6 +4,29 @@ definitions:
     properties:
       phone:
         type: string
+    required:
+    - phone
+    type: object
+  dto.AuthResponse:
+    properties:
+      sessionId:
+        type: string
+    type: object
+  dto.AuthVerifyRequest:
+    properties:
+      code:
+        minLength: 4
+        type: string
+      sessionId:
+        type: string
+    required:
+    - code
+    - sessionId
+    type: object
+  dto.AuthVerifyResponse:
+    properties:
+      token:
+        type: string
     type: object
   dto.CreateProductRequest:
     properties:
@@ -22,15 +45,6 @@ definitions:
     - description
     - images
     - name
-    type: object
-  entity.Auth:
-    properties:
-      id:
-        type: integer
-      session:
-        type: string
-      user_id:
-        type: integer
     type: object
   entity.Product:
     properties:
@@ -81,12 +95,38 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/entity.Auth'
+            $ref: '#/definitions/dto.AuthResponse'
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/response.ErrorsResponse'
-      summary: Создать продукт
+      summary: Авторизация
+      tags:
+      - auth
+  /auth/verify:
+    post:
+      consumes:
+      - application/json
+      description: Верификация
+      parameters:
+      - description: Продукт
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AuthVerifyRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.AuthVerifyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorsResponse'
+      summary: Авторизация
       tags:
       - auth
   /products:

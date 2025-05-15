@@ -43,3 +43,11 @@ func (r *AuthRepository) UpdateSession(userId int64, session string) (*entityAut
 		Scan(&updated.Id, &updated.UserId, &updated.Session)
 	return &updated, err
 }
+
+func (r *AuthRepository) FindBySession(sessionId string) (*entityAuth.Auth, error) {
+	query := `SELECT * FROM auth WHERE session = $1`
+	var auth entityAuth.Auth
+	err := r.db.QueryRow(query, sessionId).
+		Scan(&auth.Id, &auth.UserId, &auth.Session)
+	return &auth, err
+}
