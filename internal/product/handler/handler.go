@@ -55,6 +55,14 @@ func (h *Handler) handleProductByID(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// GetAll godoc
+// @Summary Получить список продуктов
+// @Description Возвращает все продукты
+// @Tags products
+// @Produce  json
+// @Success 200 {array} entity.Product
+// @Failure 500 {object} response.ErrorsResponse
+// @Router /products [get]
 func (h *Handler) GetAll(w http.ResponseWriter, r *http.Request) {
 	products, err := h.service.GetAllProducts()
 	if err != nil {
@@ -89,6 +97,16 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	response.WriteJSON(w, http.StatusCreated, created)
 }
 
+// GetByID godoc
+// @Summary Получить продукт по ID
+// @Description Возвращает продукт по его идентификатору
+// @Tags products
+// @Produce  json
+// @Param   id path int true "ID продукта"
+// @Success 200 {object} entity.Product
+// @Failure 400 {object} response.ErrorsResponse
+// @Failure 404 {object} response.ErrorsResponse
+// @Router /products/{id} [get]
 func (h *Handler) GetByID(w http.ResponseWriter, r *http.Request, id int64) {
 	product, err := h.service.GetProductByID(id)
 	if err != nil {
@@ -97,6 +115,20 @@ func (h *Handler) GetByID(w http.ResponseWriter, r *http.Request, id int64) {
 	}
 	response.WriteJSON(w, http.StatusOK, product)
 }
+
+// Update godoc
+// @Summary Обновить продукт
+// @Description Обновляет данные продукта по ID
+// @Tags products
+// @Accept  json
+// @Produce  json
+// @Param   id path int true "ID продукта"
+// @Param   product body entity.Product true "Продукт"
+// @Success 200 {object} entity.Product
+// @Failure 400 {object} response.ErrorsResponse
+// @Failure 404 {object} response.ErrorsResponse
+// @Failure 500 {object} response.ErrorsResponse
+// @Router /products/{id} [put]
 
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request, id int64) {
 	var p entity.Product
@@ -113,6 +145,17 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request, id int64) {
 	response.WriteJSON(w, http.StatusOK, updated)
 }
 
+// Delete godoc
+// @Summary Удалить продукт
+// @Description Удаляет продукт по ID
+// @Tags products
+// @Produce  json
+// @Param   id path int true "ID продукта"
+// @Success 204 "No Content"
+// @Failure 400 {object} response.ErrorsResponse
+// @Failure 404 {object} response.ErrorsResponse
+// @Failure 500 {object} response.ErrorsResponse
+// @Router /products/{id} [delete]
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request, id int64) {
 	product, err := h.service.GetProductByID(id)
 	_, err = h.service.DeleteProduct(product)

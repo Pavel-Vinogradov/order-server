@@ -10,7 +10,7 @@ type AuthResponse struct {
 
 type AuthVerifyRequest struct {
 	SessionID string `json:"sessionId" validate:"required"`
-	Code      int    `json:"code" validate:"min=4,required"`
+	Code      string `json:"code" validate:"required,min=4,max=6"`
 }
 
 type AuthVerifyResponse struct {

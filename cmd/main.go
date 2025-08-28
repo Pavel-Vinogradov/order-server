@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"order-server/infrastructure/db"
 	authHandler "order-server/internal/auth/handler"
@@ -16,6 +15,8 @@ import (
 	userRepository "order-server/internal/user/repository"
 	userService "order-server/internal/user/service"
 	"order-server/pkg/logger"
+
+	"github.com/sirupsen/logrus"
 )
 
 // @title Order API
